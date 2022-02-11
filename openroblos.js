@@ -78,3 +78,4 @@ openfuckin()
 //func end, dont place below here
 }
 openclient()
+//openclient(cookie, gameid, jobid)
