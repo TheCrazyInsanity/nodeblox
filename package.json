@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "delay": "^5.0.0",
-    "noblox.js": "^4.13.0"
+    "noblox.js": "^4.13.0",
+    "ws": "^8.5.0"
   }
 }
