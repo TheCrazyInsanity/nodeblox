@@ -72,7 +72,7 @@ async function openfuckin(){
 await delay(1000)
 var launchoptions = `%localappdata%/Roblox/Versions/${version}/RobloxPlayerBeta.exe --play -t ${authticket} -j ${browseridlinksex} -b ${time} --launchtime=${time} --rloc en_us --gloc en_us`
 console.log(launchoptions)
-exec(launchoptions)
+children.push(exec(launchoptions).pid)
 
 }
 openfuckin()
@@ -136,3 +136,14 @@ function execute(filelocation, scriplets){
 //execute(location to script, scriplets)
 //execute("./scripletexample.lua", `"1","2","3"`) Check example scripletexample.lua, this would print 1 2 3 seperately in console
 exports.execute = execute
+
+function killall() {
+  console.log("If This ever says killing 2, something is broken very bad")
+  console.log('killing', children.length, 'child processes');
+  children.forEach(function(child) {
+      spawn("taskkill", ["/pid", children, '/f', '/t']);
+      //Remove the child process from the array
+      children.splice(children.indexOf(child), 1);
+  });
+};
+//killall() No arguments as of yet
