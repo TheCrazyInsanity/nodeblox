@@ -81,7 +81,7 @@ openfuckin()
 //openclient(cookie, gameid, jobid)
 exports.openclient = openclient
 
-function execute(filelocation){
+function execute(filelocation, scriplets){
   //Function taken from burkino, many thanks!
   function chunk(s, maxBytes) {
     let buf = Buffer.from(s);
@@ -92,6 +92,7 @@ function execute(filelocation){
     }
     return result;
   }
+
   const fs = require('fs');
   //Stolen example code from ws, idk how to use it
   const WebSocketServer = require('ws').Server;
@@ -107,6 +108,14 @@ function execute(filelocation){
           ws.send("start")
           //Script procesing and stuff here idk
           var rawscript = fs.readFileSync(filelocation)
+          var scripletarr = scriplets.split(",")
+          var index = 1
+          scripletarr.forEach((scripletarr)=>{
+          rawscript = `scripletarg`+ index +`=`+ scripletarr +`
+          `+ rawscript
+          index = index + 1
+          })
+          console.log(rawscript)
           var script = chunk(rawscript, 60000)
           script.forEach((script) => {
             ws.send(script);
@@ -124,4 +133,5 @@ function execute(filelocation){
     });
   });
 }
-//execute(location to script)
+//execute(location to script, scriplets)
+//execute("./scripletexample.lua", `"1","2","3"`) Check example scripletexample.lua, this would print 1 2 3 seperately in console

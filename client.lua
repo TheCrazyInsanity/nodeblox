@@ -9,6 +9,7 @@ print("starting")
 script = ""
 elseif Msg == "end" then
 loadstring(script)()
+setclipboard(script)
 WebSocket:Send("ok kys")
 else
 script = script .. Msg
