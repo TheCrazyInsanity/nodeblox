@@ -11,4 +11,4 @@ As of right now its mostly unfinished idk how to make a checklist so here is my 
 - [X] Wiki / Documentation
 - [ ] Multi account
 - [ ] Account storage
-- [ ] Upload to npm
+- [X] Upload to npm
