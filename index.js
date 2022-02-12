@@ -70,7 +70,7 @@ await urlfuckin()
 await delay(1000)
 async function openfuckin(){
 await delay(1000)
-var launchoptions = `%localappdata%/Roblox/Versions/${version}/RobloxPlayerBeta.exe --play -t ${authticket} -j ${browseridlinksex} -b ${time} --launchtime=${time} --rloc en_us --gloc en_us`
+var launchoptions = `"C:\Program Files (x86)\Roblox\Versions${version}/RobloxPlayerBeta.exe" --play -t ${authticket} -j ${browseridlinksex} -b ${time} --launchtime=${time} --rloc en_us --gloc en_us`
 console.log(launchoptions)
 children.push(exec(launchoptions).pid)
 
