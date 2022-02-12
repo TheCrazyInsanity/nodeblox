@@ -1,7 +1,25 @@
 {
   "dependencies": {
+    "axios": "^0.25.0",
     "delay": "^5.0.0",
     "noblox.js": "^4.13.0",
     "ws": "^8.5.0"
-  }
+  },
+  "name": "@thecrazyinsanity2/nodeblox",
+  "version": "1.8.0",
+  "description": "drone delivery for lego game, for more info check my github https://github.com/TheCrazyInsanity/nodeblox",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/thecrazyinsanity/nodeblox"
+  },
+  "keywords": [
+    "roblox",
+    "bot"
+  ],
+  "author": "thecrazyinsanity",
+  "license": "ISC"
 }

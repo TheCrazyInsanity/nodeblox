@@ -2,6 +2,7 @@ const { fstat } = require('fs');
 
 //Why have many file, when can have one big file?
 async function openclient (cookiehere, gameid, jobid) {
+  var children  = [];
 let authticket = null
 let version = null
 const delay = require('delay');
@@ -147,3 +148,4 @@ function killall() {
   });
 };
 //killall() No arguments as of yet
+exports.killall = killall 
