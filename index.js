@@ -135,3 +135,4 @@ function execute(filelocation, scriplets){
 }
 //execute(location to script, scriplets)
 //execute("./scripletexample.lua", `"1","2","3"`) Check example scripletexample.lua, this would print 1 2 3 seperately in console
+exports.execute = execute
