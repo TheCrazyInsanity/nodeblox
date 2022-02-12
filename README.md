@@ -6,7 +6,7 @@ As of right now its mostly unfinished idk how to make a checklist so here is my 
 - [x] Joining
 - [X] Execution
 - [ ] Returns
-- [ ] Wiki / Documentation
+- [X] Wiki / Documentation
 - [ ] Multi account
 - [ ] Account storage
 - [ ] Upload to npm
