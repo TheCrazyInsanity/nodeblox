@@ -12,3 +12,5 @@ As of right now its mostly unfinished idk how to make a checklist so here is my 
 - [ ] Multi account
 - [ ] Account storage
 - [X] Upload to npm
+
+Under MIT open source license
