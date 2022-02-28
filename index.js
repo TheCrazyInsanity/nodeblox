@@ -1,8 +1,8 @@
 const { fstat } = require('fs');
-
+var children  = [];
 //Why have many file, when can have one big file?
 async function openclient (cookiehere, gameid, jobid) {
-  var children  = [];
+
 let authticket = null
 let version = null
 const delay = require('delay');
@@ -142,6 +142,7 @@ function killall() {
   console.log("If This ever says killing 2, something is broken very bad")
   console.log('killing', children.length, 'child processes');
   children.forEach(function(child) {
+    var spawn     = require('child_process').spawn;
       spawn("taskkill", ["/pid", children, '/f', '/t']);
       //Remove the child process from the array
       children.splice(children.indexOf(child), 1);
