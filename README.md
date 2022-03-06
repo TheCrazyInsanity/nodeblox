@@ -9,8 +9,7 @@ As of right now its mostly unfinished idk how to make a checklist so here is my 
 - [X] Execution
 - [ ] Returns
 - [X] Wiki / Documentation
-- [ ] Multi account
-- [ ] Account storage
+- [ ] Multi account at once
 - [X] Upload to npm
 
 Under MIT open source license
