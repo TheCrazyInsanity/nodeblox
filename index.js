@@ -114,7 +114,7 @@ function execute(filelocation, scriplets) {
 				var index = 1
 				scripletarr.forEach((scripletarr) => {
 					rawscript = `scripletarg` + index + `=` + scripletarr + `
-          ` + rawscript
+` + rawscript
 					index = index + 1
 				})
 				console.log(rawscript)
