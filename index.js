@@ -1,6 +1,3 @@
-const {
-	fstat
-} = require('fs');
 var children = [];
 //Why have many file, when can have one big file?
 async function openclient(cookiehere, gameid, jobid) {
