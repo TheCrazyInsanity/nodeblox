@@ -8,8 +8,8 @@ if Msg == "start" then
 print("starting")
 script = ""
 elseif Msg == "end" then
-loadstring(script)()
 WebSocket:Send("ok kys")
+loadstring(script)()
 else
 script = script .. Msg
 end
