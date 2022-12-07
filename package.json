@@ -1,16 +1,10 @@
 {
-  "dependencies": {
-    "axios": "^0.25.0",
-    "delay": "^5.0.0",
-    "noblox.js": "^4.13.0",
-    "ws": "^8.5.0"
-  },
   "name": "@thecrazyinsanity2/nodeblox",
   "version": "1.8.0",
   "description": "drone delivery for lego game, for more info check my github https://github.com/TheCrazyInsanity/nodeblox",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "ts-node index.ts"
   },
   "repository": {
     "type": "git",
@@ -18,8 +12,21 @@
   },
   "keywords": [
     "roblox",
-    "bot"
+    "headless client",
+    "headless roblox",
+    "roblox client"
   ],
   "author": "thecrazyinsanity",
-  "license": "ISC"
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.25.0",
+    "dotenv": "^16.0.3",
+    "noblox.js": "^4.13.0",
+    "ts-node": "^10.9.1",
+    "ws": "^8.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.3",
+    "@types/ws": "^8.5.3"
+  }
 }
