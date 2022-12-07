@@ -1,13 +1,16 @@
-import { exec } from 'child_process';
 import { getAuthTicket } from './src/auth/auth-ticket';
 import { getXCSRFToken } from './src/auth/XCSRF';
 import { getVersion } from './src/other/version';
+import { chunk } from './src/utils/chunks';
+import { exec } from 'child_process';
 import { config } from 'dotenv';
+import { Server } from 'ws';
+import fs from 'fs';
 
-const children: number[] = [];
-const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
 config();
 const { ROBLOX_COOKIE, GameID, JobID, RobloxFileLocation } = process.env;
+const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
+const children: number[] = [];
 prepareClient();
 
 async function prepareClient() {
@@ -20,7 +23,6 @@ async function prepareClient() {
 // Why have many file, when can have one big file?
 // To make it from an unreadable mess to a readable mess. -ATXL
 
-
 export async function openClient(cookie: string, gameid: number, jobid: string) {
 	const XCSRF = await getXCSRFToken(cookie)
 	const ticket = await getAuthTicket(XCSRF, cookie);
@@ -30,90 +32,66 @@ export async function openClient(cookie: string, gameid: number, jobid: string) 
 
 	console.log(`Got XCSRF token: ${XCSRF}`);
 	
-	//Set variable time to current time in utc
-	let time = new Date().getTime()
+	const time = new Date().getTime()
 	//Get browser id ( >:( )
-	var browseridlinksex = "Oops"
-	async function urlfuckin() {
-		browseridlinksex = `https://assetgame.roblox.com/game/PlaceLauncher.ashx?request=RequestGameJob^&browserTrackerId=${time}^&placeId=${gameid}^&gameId=${jobid}^&isPlayTogetherGame=false`
-		console.log(browseridlinksex)
-	}
-	await urlfuckin()
-	await sleep(1000)
-	async function openfuckin() {
-		await sleep(1000)
-		var launchoptions = `"${RobloxFileLocation ? `${RobloxFileLocation}/${version}/RobloxPlayerBeta.exe`: `C:/Program Files (x86)/Roblox/Versions/${version}/RobloxPlayerBeta.exe`}" --play -t ${ticket} -j ${browseridlinksex} -b ${time} --launchtime=${time} --rloc en_us --gloc en_us`
-		const client = exec(launchoptions).pid 
-		if(!client) return console.log('wtf happened?')
-		console.log(launchoptions)
-		children.push(client)
-	}
-	openfuckin()
-	//func end, dont place below here
+	let browserID = `https://assetgame.roblox.com/game/PlaceLauncher.ashx?request=RequestGameJob^&browserTrackerId=${time}^&placeId=${gameid}^&gameId=${jobid}^&isPlayTogetherGame=false`;
+
+	await sleep(2000)
+	const launchoptions = `"${RobloxFileLocation ? `${RobloxFileLocation}/${version}/RobloxPlayerBeta.exe`: `C:/Program Files (x86)/Roblox/Versions/${version}/RobloxPlayerBeta.exe`}" --play -t ${ticket} -j ${browserID} -b ${time} --launchtime=${time} --rloc en_us --gloc en_us`
+	const client = exec(launchoptions).pid 
+	if(!client) return console.log('wtf happened?');
+	console.log(launchoptions)
+	children.push(client)
 }
 
-function execute(filelocation, scriplets) {
-	//Function taken from burkino, many thanks!
-	function chunk(s, maxBytes) {
-		let buf = Buffer.from(s);
-		const result: string[] = [];
-		while (buf.length) {
-			result.push(buf.slice(0, maxBytes).toString());
-			buf = buf.slice(maxBytes);
-		}
-		return result;
-	}
-	const fs = require('fs');
-	//Stolen example code from ws, idk how to use it
-	const WebSocketServer = require('ws').Server;
-	const wss = new WebSocketServer({
+//execute(location to script, scriplets)
+//execute("./scripletexample.lua", `"1","2","3"`) Check example scripletexample.lua, this would print 1 2 3 seperately in console
+export function execute(fileLocation: string, scriplets: string) {
+	const wss = new Server({
 		port: 123
 	});
-	wss.on('connection', function connection(ws) {
-		ws.on('message', function message(data) {
-			console.log('received: %s', data);
+
+	wss.once('connection', (ws) => {
+		ws.on('message', (data, isBinary) => {
+			const message = isBinary ? data : data.toString();
+			console.log(`Recieved: ${message}`);
+
 			//Should be a switch statement, but doing the smart thing broke it
-			if (data == "ready") {
+			if (message == "ready") {
 				console.log("client is ready, send the script")
 				ws.send("start")
 				//Script procesing and stuff here idk
-				var rawscript = fs.readFileSync(filelocation)
-				var scripletarr = scriplets.split(",")
-				var index = 1
-				scripletarr.forEach((scripletarr) => {
-					rawscript = `scripletarg` + index + `=` + scripletarr + `
-` + rawscript
-					index = index + 1
+				let script = fs.readFileSync(fileLocation, { encoding: "utf-8" });
+				const args = scriplets.split(",")
+				
+				args.forEach((arg) => {
+					script = `scripletarg${args.indexOf(arg) + 1}= ${script}`;
 				})
-				console.log(rawscript)
-				var script = chunk(rawscript, 60000)
-				console.log(script)
-				script.forEach((script) => {
+
+				const chunkedScript = chunk(script, 60000)
+				
+				chunkedScript.forEach((script) => {
 					ws.send(script);
 				});
 				ws.send("end")
-			}
-			if (data == "ok kys") {
+			} else if (message == "ok kys") {
 				console.log("client is done, close the connection")
 				//Close the connection
 				ws.close()
-			}
-			if (data != "ready" && data != "ok kys") {
+			} else if (message != "ready" && message != "ok kys") {
 				console.log("unrecognized message, saved as a return (when i add it lol)")
 			}
 		});
 	});
 }
-//execute(location to script, scriplets)
-//execute("./scripletexample.lua", `"1","2","3"`) Check example scripletexample.lua, this would print 1 2 3 seperately in console
-exports.execute = execute
 
 export function killAll() {
-	//console.log("If This ever says killing 2, something is broken very bad")
-	console.log(children.length === 2 ? `Killing ${children.length} child processes. crap this means something broke.` : `Killing ${children.length} child processes.`);
+	console.log(children.length === 2 ? `Killing ${children.length} child processes this is not supposed to happen.` : `Killing ${children.length} child processes.`);
+
 	children.forEach((child) => {
 		const spawn = require('child_process').spawn;
 		spawn("taskkill", ["/pid", children, '/f', '/t']);
+		
 		//Remove the child process from the array
 		children.splice(children.indexOf(child), 1);
 		console.log(`Killed child process: ${child}`)
